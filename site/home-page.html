@@ -5330,9 +5330,12 @@ body #rb-library-menu.rb-library-menu a:hover,body #rb-library-menu.rb-library-m
 }
 #rb-register-slot{display:none}
 @media(max-width:800px){
-  /* נקודת ההתחלה: בתוך ה-hero, מיושר לימין, בין הפסקה לשורת התחומים */
-  html.rb-is-home #rb-register-slot{display:flex;justify-content:flex-start;direction:rtl;min-height:44px;margin:4px 0 10px}
-  html.rb-is-home #rb-register-fab.rb-fab-inline{position:static;box-shadow:0 4px 12px rgba(18,61,99,.18)}
+  /* נקודת ההתחלה: בתוך ה-hero, מימין, ברווח הקיים בין הפסקה לשורת התחומים.
+     גובה המשבצת 0, כך ששום תוכן לא זז; הכפתור הקטן יושב בתוך הרווח של 25px */
+  html.rb-is-home #rb-register-slot{display:block;position:relative;height:0;margin:0;padding:0}
+  html.rb-is-home #rb-register-fab.rb-fab-inline{position:absolute;right:0;left:auto;top:0;bottom:auto;
+    min-height:0;height:24px;padding:0 11px 0 9px;gap:5px;font-size:12.5px;box-shadow:0 3px 8px rgba(18,61,99,.16)}
+  html.rb-is-home #rb-register-fab.rb-fab-inline .rb-wa-icon{width:14px;height:14px}
 }
 @media print{#rb-register-fab{display:none!important}}
 </style>
