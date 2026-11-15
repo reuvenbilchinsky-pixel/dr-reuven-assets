@@ -5310,11 +5310,11 @@ body #rb-library-menu.rb-library-menu a:hover,body #rb-library-menu.rb-library-m
 #rb-home-v4 .contact{gap:8px}
 #rb-home-v4 .rb-wa-icon{flex:0 0 auto;display:block}
 #rb-home-v4 .rb-clinic-btn .rb-wa-icon{width:20px;height:20px}
-/* כפתור צף בנייד: מוצג רק בדף הבית ורק במסך צר */
+/* כפתור צף בנייד: מוצג רק בדף הבית ורק במסך צר, בפינה הימנית (השמאלית תפוסה בווידג׳טים של נגישות ושפה) */
 #rb-register-fab{display:none}
 @media(max-width:800px){
   html.rb-is-home #rb-register-fab{
-    position:fixed;z-index:99990;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));
+    position:fixed;z-index:99990;right:14px;left:auto;bottom:calc(14px + env(safe-area-inset-bottom,0px));
     display:inline-flex;align-items:center;gap:8px;direction:rtl;
     padding:10px 16px 10px 14px;min-height:44px;box-sizing:border-box;border-radius:999px;
     background:#1fa855;color:#fff!important;text-decoration:none!important;
