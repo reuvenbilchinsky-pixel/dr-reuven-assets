@@ -1884,6 +1884,7 @@ body.rb-inner-page:not(.rb-unity-page) #rb-home-v4 .out:before{
 <p class="tag">רפואה שמחפשת את המקור</p>
 <div class="gold"><i></i><b></b><i></i></div>
 <p class="desc">רופא בעל ניסיון של מעל 30 שנה. הוסמכתי כמומחה ברפואת משפחה בשנת 2008, ואני משלב בעבודתי גם כלים מתחומי הרפואה המשלימה.</p>
+<div id="rb-register-slot"></div>
 <div class="spec"><span>רפואת משפחה</span><b>•</b><span>קינזיולוגיה</span><b>•</b><span>דיקור סיני</span><b>•</b><span>PDTR</span></div>
 <div class="rb-audit-main-actions" aria-label="אפשרויות מרכזיות באתר">
   <a class="rb-audit-action rb-audit-clinic" href="https://www.dr-reuven-kinezio.co.il/p/your-first-visit.html">טיפול בקליניקה <span aria-hidden="true">←</span></a>
@@ -5327,6 +5328,12 @@ body #rb-library-menu.rb-library-menu a:hover,body #rb-library-menu.rb-library-m
   /* כשתפריט או חלון פתוחים, הכפתור מתחבא */
   html.rb-is-home.rb-fab-hidden #rb-register-fab{opacity:0;pointer-events:none;transform:translateY(12px)}
 }
+#rb-register-slot{display:none}
+@media(max-width:800px){
+  /* נקודת ההתחלה: בתוך ה-hero, מיושר לימין, בין הפסקה לשורת התחומים */
+  html.rb-is-home #rb-register-slot{display:flex;justify-content:flex-start;direction:rtl;min-height:44px;margin:4px 0 10px}
+  html.rb-is-home #rb-register-fab.rb-fab-inline{position:static;box-shadow:0 4px 12px rgba(18,61,99,.18)}
+}
 @media print{#rb-register-fab{display:none!important}}
 </style>
 <a id="rb-register-fab" class="rb-register-link" href="https://wa.me/972537351530?text=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%A8%D7%A9%D7%9D%20%D7%9C%D7%A7%D7%9C%D7%99%D7%A0%D7%99%D7%A7%D7%94" target="_blank" rel="noopener" aria-label="רישום לקליניקה בוואטסאפ"><svg class="rb-wa-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.03c-.25.69-1.44 1.32-1.99 1.36-.51.05-.99.24-3.33-.69-2.82-1.11-4.6-4-4.74-4.18-.14-.19-1.13-1.5-1.13-2.87 0-1.36.71-2.03.97-2.31.25-.28.55-.35.74-.35l.53.01c.17.01.4-.06.62.48.25.6.85 2.07.92 2.22.07.15.12.32.02.51-.1.19-.15.31-.3.48l-.44.52c-.15.15-.3.31-.13.6.17.3.77 1.27 1.65 2.05 1.13 1.01 2.09 1.32 2.38 1.47.3.15.47.12.64-.07.18-.2.74-.86.94-1.16.2-.3.39-.25.66-.15.27.1 1.73.82 2.03.97.3.15.49.22.57.35.07.12.07.72-.18 1.41z"/></svg><span>רישום לקליניקה</span></a>
@@ -5334,9 +5341,28 @@ body #rb-library-menu.rb-library-menu a:hover,body #rb-library-menu.rb-library-m
 (function(){
   var fab=document.getElementById('rb-register-fab');
   if(!fab)return;
-  /* מעבירים ל-body כדי שהמיקום הקבוע לא ייחתך על ידי עיצוב התבנית */
-  if(fab.parentNode!==document.body)document.body.appendChild(fab);
   var html=document.documentElement;
+  var slot=document.getElementById('rb-register-slot');
+  /* בהתחלה הכפתור יושב ב-hero; כשגוללים מעבר לו הוא עובר ל-body כצף בפינה הימנית */
+  function place(inline){
+    if(inline&&slot){
+      if(fab.parentNode!==slot)slot.appendChild(fab);
+      fab.classList.add('rb-fab-inline');
+    }else{
+      if(fab.parentNode!==document.body)document.body.appendChild(fab);
+      fab.classList.remove('rb-fab-inline');
+    }
+  }
+  if(slot&&'IntersectionObserver' in window){
+    place(true);
+    new IntersectionObserver(function(en){
+      var e=en[0];
+      /* צף רק אחרי שהמקום המקורי יצא מלמעלה; כשהוא נראה או עוד לא הגענו אליו — בתוך ה-hero */
+      place(e.isIntersecting||e.boundingClientRect.top>0);
+    }).observe(slot);
+  }else{
+    place(false);
+  }
   function sync(){
     var open=!!document.querySelector('#rb-home-v4 nav.open, .rb-approach-modal.rb-open, #rb-library-menu:not([hidden])');
     html.classList.toggle('rb-fab-hidden',open);
